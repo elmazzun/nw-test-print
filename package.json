@@ -5,11 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dist-linux": "build --tasks linux-x64 --mirror https://dl.nwjs.io/ .",
+    "dist-windows": "build --tasks win-x64 --mirror https://dl.nwjs.io/ .",
+    "dist-all": "build --concurrent --tasks linux-x64,win-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "printer": "^0.4.0"
+  },
+  "devDependencies": {
+    "nwjs-builder-phoenix": "^1.15.0"
   }
 }
