@@ -1,11 +1,18 @@
 {
   "name": "test-print",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Test lettura stampanti da Linux",
+  "main": "index.html",
+  "repository": {},
+  "build": {
+    "nwVersion": "0.49.1",
+    "nwFlavor": "sdk",
+    "packed": true
+  },
   "scripts": {
-    "start": "node index.js",
-    "dist-linux": "build --tasks linux-x64 --mirror https://dl.nwjs.io/ .",
+    "start": "run --x64 .",
+    "start-nw": "./node_modules/nw/bin/nw dist/test-print-1.0.0-linux-x64/test-print",
+    "dist-linux": "build --tasks linux-x64 .",
     "dist-windows": "build --tasks win-x64 --mirror https://dl.nwjs.io/ .",
     "dist-all": "build --concurrent --tasks linux-x64,win-x64,mac-x64 --mirror https://dl.nwjs.io/ .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +23,7 @@
     "printer": "^0.4.0"
   },
   "devDependencies": {
+    "nw": "^0.49.1-sdk",
     "nwjs-builder-phoenix": "^1.15.0"
   }
 }

@@ -1,0 +1,88 @@
+<html>
+	<body>
+		<div>
+			<p>Seleziona un PDF cliccando il pulsante</p>
+			<input id="chooseFile" type="file"></input>
+		</div>
+
+		<div>
+			<p>Seleziona una stampante tra le disponibili</p>
+			<select id="selectPrinter">
+				<option></option>
+			</select>
+		</div>
+
+		<div>
+			<p>Seleziona un formato di stampa</p>
+			<select id="selectFormat">
+				<option></option>
+			</select>
+		</div>
+		<div>
+			<p>Stampa il PDF selezionato con il pulsante sotto:</p>
+			<button onclick="sendPrint()">Stampa</button>
+		</div>
+
+		<script>
+			const printer = require('printer')
+			const printers = printer.getPrinters()
+			const formats = printer.getSupportedPrintFormats()
+			const printersNames = printers.map(printer => printer.name)
+
+			fillPrintersOptions()
+			fillFormatOptions()
+
+			function fillPrintersOptions() {
+				const selectPrinterMenu = document.getElementById("selectPrinter");
+				for(let i = 0; i < printersNames.length; i++) {
+					const opt = printersNames[i];
+    				const el = document.createElement("option");
+    				el.textContent = opt;
+    				el.value = opt;
+    				selectPrinterMenu.appendChild(el);
+				}
+			}
+
+			function fillFormatOptions() {
+				const selectFormatMenu = document.getElementById("selectFormat");
+				for(let i = 0; i < formats.length; i++) {
+					const opt = formats[i];
+    				const el = document.createElement("option");
+    				el.textContent = opt;
+    				el.value = opt;
+    				selectFormatMenu.appendChild(el);
+				}
+			}
+
+			document.write('<div>Stampante di default di sistema: ' +
+				printer.getDefaultPrinterName() || 'nessuna'
+				+ '</div>')
+			document.write('<div>Comandi di jop supportati: ' + printer.getSupportedJobCommands() + '</div>')
+
+			function sendPrint() {
+				console.log(`File: ${document.getElementById("chooseFile").value}`)
+				if (!document.getElementById("chooseFile").value) {
+					console.error('Seleziona un file')
+					return
+				}
+				console.log('Stampante:', document.getElementById("selectPrinter").value)
+				if (document.getElementById("selectPrinter").value === '') {
+					console.error('Seleziona una stampante')
+					return
+				}
+				if (document.getElementById("selectFormat").value === '') {
+					console.error('Seleziona un formato di stampa')
+					return
+				}
+				const supportedFormats = printer.getSupportedJobCommands()
+				printer.printDirect({
+					data: document.getElementById("chooseFile").value,
+					printer: document.getElementById("selectPrinter").value,
+					type: document.getElementById("selectFormat").value,
+					success: () => console.log('Stampato'),
+					error: (err) => console.error('Errore:', err)
+				})
+			}
+		</script>
+	</body>
+</html>
